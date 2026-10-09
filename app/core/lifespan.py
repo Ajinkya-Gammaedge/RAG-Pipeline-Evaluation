@@ -14,9 +14,8 @@ async def lifespan(app: FastAPI):
             await conncetion.execute(text("SELECT 1"))
             logger.info("Database connection successful")
 
-    except Exception as e:
-        logger.error("Database conncetion failed", e)
-
+    except Exception:
+        logger.error("Database conncetion failed")
         raise
 
     yield
