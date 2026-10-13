@@ -7,6 +7,19 @@ from app.db import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
 
+from app.schema import (
+    HealthResponse,
+    QueryRequest,
+    QueryResponse,
+    SourceChunk,
+    LLMMetadata,
+    TokenUsage,
+)
+from app.core import lifespan
+from app.retrieval.retrieval import retrieve
+from app.generation import generate_answer, GenerationError
+from app.embeddings.sentence_tranformer import embedder
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -28,16 +41,75 @@ def create_app() -> FastAPI:
             await session.execute(text("SELECT 1"))
             return HealthResponse(status="ok", message="Service is running")
         except Exception as e:
-            logger.error(e)
+            logger.error("Health check database failure: %s", e)
             raise HTTPException(
-                status_code=503,
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 detail="Database is unavailable",
             )
 
-    @app.get("/query")
-    async def query():
-        raise HTTPException(
-            status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Not Implemented"
+    @app.post("/query", response_model=QueryResponse)
+    async def query(
+        request_body: QueryRequest,
+        session: AsyncSession = Depends(get_db),
+    ) -> QueryResponse:
+        start = perf_counter()
+
+        # 1. embed query
+        query_vector = await embedder.embed_query(request_body.query)
+
+        # 2. retrieve relevant chunks
+        chunks = await retrieve(
+            session=session,
+            query=request_body.query,
+            top_k=request_body.top_k,
+            mode=request_body.retrieval_mode,
+            rrf_k=request_body.rrf_k,
+            query_vector=query_vector,
+        )
+
+        if not chunks:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="No relevant documents found.",
+            )
+
+        # 3. generate answer
+        try:
+            result = await generate_answer(
+                query=request_body.query,
+                chunks=chunks,
+            )
+        except GenerationError as exc:
+            logger.error("LLM Generation failed: %s", exc)
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail=str(exc),
+            )
+
+        latency_ms = (perf_counter() - start) * 1000
+
+        return QueryResponse(
+            answer=result.answer,
+            sources=[
+                SourceChunk(
+                    chunk_id=c.chunk_id,
+                    document_id=c.document_id,
+                    score=round(c.score, 6),
+                    start_offset=c.start_offset,
+                    end_offset=c.end_offset,
+                )
+                for c in chunks
+            ],
+            retrieval_mode=request_body.retrieval_mode,
+            llm_metadata=LLMMetadata(
+                model=result.model,
+                token_usage=TokenUsage(
+                    prompt_tokens=result.prompt_tokens,
+                    completion_tokens=result.completion_tokens,
+                    total_tokens=result.total_tokens,
+                ),
+            ),
+            latency_ms=round(latency_ms, 2),
         )
 
     return app
