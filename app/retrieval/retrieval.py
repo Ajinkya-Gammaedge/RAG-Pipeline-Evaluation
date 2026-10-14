@@ -191,3 +191,18 @@ async def retrieve(
         raise ValueError(
             f"Unknown retrieval mode: {mode!r}. Must be 'vector', 'lexical', or 'hybrid'."
         )
+
+
+def aggregate_document_scores(
+    chunks: list[RetrievedChunk],
+) -> dict[str, float]:
+    """
+    Aggregate chunk scores to document level for BEIR evaluation.
+    Maps: {str(document_id): max_score}
+    """
+    doc_scores: dict[str, float] = {}
+    for chunk in chunks:
+        doc_id_str = str(chunk.document_id)
+        if doc_id_str not in doc_scores or chunk.score > doc_scores[doc_id_str]:
+            doc_scores[doc_id_str] = chunk.score
+    return doc_scores

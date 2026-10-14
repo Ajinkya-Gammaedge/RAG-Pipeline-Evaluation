@@ -4,7 +4,7 @@ from sqlalchemy import text
 
 from app.db import session_local
 from app.embeddings.sentence_tranformer import embedder
-from app.retrieval.retrieval import retrieve
+from app.retrieval.retrieval import retrieve, aggregate_document_scores
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -75,7 +75,12 @@ async def main():
                 result.content[:70],
             )
 
-        # 4. Explain vector query plan
+        # 4. Document-level aggregation
+        logger.info("Aggregated Document Scores (BEIR Format)")
+        doc_scores = aggregate_document_scores(hybrid_results)
+        logger.info("%s", doc_scores)
+
+        # 5. Explain vector query plan
         logger.info("Vector Search Query Plan (EXPLAIN ANALYZE)")
 
         vector_str = "[" + ",".join(str(x) for x in query_vector) + "]"
