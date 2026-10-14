@@ -16,6 +16,13 @@ class SentenceTransformerEmbedder:
             texts,
         )
 
+    async def embed_query(self, text: str) -> list[float]:
+        vectors = await asyncio.to_thread(
+            self._encode,
+            [text],
+        )
+        return vectors[0]
+
     def _encode(self, texts: list[str]) -> list[list[float]]:
         vectors = self.model.encode(
             texts,
