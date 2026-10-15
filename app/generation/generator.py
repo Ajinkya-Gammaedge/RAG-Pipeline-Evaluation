@@ -5,11 +5,11 @@ from typing import Sequence
 import httpx
 
 from app.core.config import settings
-from app.retrieval.retrieval import RetrievedChunk
+from app.retrieval.models import RetrievedChunk
 
 logger = logging.getLogger(__name__)
 
-PROMPT_PATH = Path(__file__).resolve().parents[2] / "app" / "prompts" / "rag_answer.txt"
+PROMPT_PATH = Path(__file__).resolve().parent.parent / "prompts" / "rag_answer.txt"
 
 PROMPT_TEMPLATE: str = PROMPT_PATH.read_text(encoding="utf-8")
 
@@ -45,7 +45,7 @@ async def generate_answer(
     query: str,
     chunks: Sequence[RetrievedChunk],
     temperature: float = 0.1,
-    max_tokens: int = 2500,
+    max_tokens: int = 1024,
 ) -> GenerationResult:
     context = build_context(chunks)
 

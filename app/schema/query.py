@@ -35,10 +35,42 @@ class QueryRequest(BaseModel):
         description="Reciprocal Rank Fusion constant, used in hybrid mode",
     )
 
+    rrf_mode: Literal["standard", "weighted"] = Field(
+        default="standard",
+        description="RRF strategy: 'standard' for 1:1 equal weights, 'weighted' for custom weights",
+    )
+
+    vector_weight: float = Field(
+        default=0.7,
+        ge=0.0,
+        le=1.0,
+        description="Vector search weight used when rrf_mode='weighted'",
+    )
+
+    lexical_weight: float = Field(
+        default=0.3,
+        ge=0.0,
+        le=1.0,
+        description="Lexical search weight used when rrf_mode='weighted'",
+    )
+
+    rerank: bool = Field(
+        default=False,
+        description="Whether to apply cross-encoder reranking to retrieved candidates",
+    )
+
+    rerank_threshold: float | None = Field(
+        default=None,
+        ge=0.0,
+        le=1.0,
+        description="Minimum relevance score threshold [0.0, 1.0] to retain chunks",
+    )
+
 
 class SourceChunk(BaseModel):
     chunk_id: int
     document_id: int
+    text: str = Field(description="Content of the retrieved text passage")
     score: float
     start_offset: int
     end_offset: int

@@ -17,6 +17,7 @@ from sqlalchemy import (
 from sqlalchemy.dialects.postgresql import TSVECTOR, JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 from pgvector.sqlalchemy import Vector
+from app.core import settings
 
 
 class DocumentChunk(Base):
@@ -68,7 +69,7 @@ class DocumentChunk(Base):
     )
 
     embedding_vector: Mapped[list[float]] = mapped_column(
-        Vector(768),
+        Vector(settings.embedding_dimension),
         nullable=False,
     )
 

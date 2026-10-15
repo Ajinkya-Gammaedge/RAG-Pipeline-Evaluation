@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Request, HTTPException, status, Depends
 from time import perf_counter
-from app.schema import HealthResponse
-from app.core import lifespan
+from app.core import lifespan, settings
 import logging
 from app.db import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -15,10 +14,9 @@ from app.schema import (
     LLMMetadata,
     TokenUsage,
 )
-from app.core import lifespan
 from app.retrieval.retrieval import retrieve
 from app.generation import generate_answer, GenerationError
-from app.embeddings.sentence_tranformer import embedder
+from app.embeddings.sentence_transformer import embedder
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -55,7 +53,9 @@ def create_app() -> FastAPI:
         start = perf_counter()
 
         # 1. embed query
-        query_vector = await embedder.embed_query(request_body.query)
+        query_vector = None
+        if request_body.retrieval_mode in ("vector", "hybrid"):
+            query_vector = await embedder.embed_query(request_body.query)
 
         # 2. retrieve relevant chunks
         chunks = await retrieve(
@@ -65,12 +65,28 @@ def create_app() -> FastAPI:
             mode=request_body.retrieval_mode,
             rrf_k=request_body.rrf_k,
             query_vector=query_vector,
+            rerank=request_body.rerank,
+            rerank_threshold=request_body.rerank_threshold,
+            rrf_mode=request_body.rrf_mode,
+            vector_weight=request_body.vector_weight,
+            lexical_weight=request_body.lexical_weight,
         )
 
         if not chunks:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="No relevant documents found.",
+            latency_ms = (perf_counter() - start) * 1000
+            return QueryResponse(
+                answer="I cannot answer based on the provided context.",
+                sources=[],
+                retrieval_mode=request_body.retrieval_mode,
+                llm_metadata=LLMMetadata(
+                    model=settings.ollama_model,
+                    token_usage=TokenUsage(
+                        prompt_tokens=0,
+                        completion_tokens=0,
+                        total_tokens=0,
+                    ),
+                ),
+                latency_ms=round(latency_ms, 2),
             )
 
         # 3. generate answer
@@ -94,6 +110,7 @@ def create_app() -> FastAPI:
                 SourceChunk(
                     chunk_id=c.chunk_id,
                     document_id=c.document_id,
+                    text=c.content,
                     score=round(c.score, 6),
                     start_offset=c.start_offset,
                     end_offset=c.end_offset,
