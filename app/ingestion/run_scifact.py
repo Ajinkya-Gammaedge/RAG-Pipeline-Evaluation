@@ -1,13 +1,13 @@
 import asyncio
 import logging
-
 from app.db import engine, session_local
 from app.ingestion.pipeline import (
     DOCUMENT_BATCH_SIZE,
     ingest_document_batch,
 )
-from app.embeddings.sentence_tranformer import embedder
+from app.embeddings.sentence_transformer import embedder
 from scripts.download_scifact import load_scifact_corpus
+from app.core import settings
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -25,6 +25,23 @@ async def main():
         for document_id, record in corpus.items()
     ]
 
+    seed_limit = settings.seed_max_docs
+    if seed_limit > 0:
+        logger.info(
+            "SEED_MAX_DOCS is set to %d. Seeding a subset of %d documents.",
+            seed_limit,
+            seed_limit,
+        )
+        documents = documents[:seed_limit]
+
+    logger.info(
+        "Ingestion config: chunk_size=%d, chunk_overlap=%d, doc_batch=%d, embed_batch=%d",
+        settings.chunk_size,
+        settings.chunk_overlap,
+        DOCUMENT_BATCH_SIZE,
+        settings.embedding_batch_size,
+    )
+
     totals = {
         "documents": 0,
         "chunks": 0,
@@ -41,6 +58,8 @@ async def main():
                 session_factory=session_local,
                 embedder=embedder,
                 documents=batch,
+                chunk_size=settings.chunk_size,
+                chunk_overlap=settings.chunk_overlap,
             )
 
             for key, value in stats.items():
