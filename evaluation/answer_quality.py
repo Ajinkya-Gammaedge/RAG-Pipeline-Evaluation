@@ -22,10 +22,11 @@ import httpx
 
 from app.core.config import settings
 from app.db.session import session_local
-from app.embeddings.sentence_tranformer import embedder
+from app.embeddings.sentence_transformer import embedder
 from app.generation.generator import generate_answer
 from app.retrieval.retrieval import retrieve
 from scripts.download_scifact import load_scifact_data
+from typing import Literal
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -110,6 +111,9 @@ async def evaluate_answer_quality(
     top_k: int = 5,
     seed: int = RANDOM_SEED,
     save_results: bool = True,
+    rerank: bool = False,
+    rerank_threshold: float | None = None,
+    rrf_mode: Literal["standard", "weighted"] = "standard",
 ) -> dict:
     """
     Sample queries with verified ground truth, run RAG, and judge each answer.
@@ -150,7 +154,7 @@ async def evaluate_answer_quality(
 
     details: list[dict] = []
 
-    async with httpx.AsyncClient(timeout=None) as client:
+    async with httpx.AsyncClient(timeout=None) as client:  # TODO: Add timeout latter
         async with session_local() as session:
             for i, qid in enumerate(sampled_ids, 1):
                 question = queries[qid]
@@ -165,6 +169,9 @@ async def evaluate_answer_quality(
                     mode=retrieval_mode,
                     rrf_k=60,
                     query_vector=query_vector,
+                    rerank=rerank,
+                    rerank_threshold=rerank_threshold,
+                    rrf_mode=rrf_mode,
                 )
 
                 if not chunks:
@@ -215,7 +222,10 @@ async def evaluate_answer_quality(
 
     summary = {
         "retrieval_mode": retrieval_mode,
+        "rrf_mode": rrf_mode if retrieval_mode == "hybrid" else None,
         "top_k": top_k,
+        "rerank": rerank,
+        "rerank_threshold": rerank_threshold,
         "sample_size": len(details),
         "avg_faithfulness": round(avg_faithfulness, 3),
         "avg_relevance": round(avg_relevance, 3),
@@ -235,8 +245,15 @@ async def evaluate_answer_quality(
         RESULTS_DIR.mkdir(parents=True, exist_ok=True)
         summary["timestamp"] = datetime.now(timezone.utc).isoformat()
 
+        suffix = ""
+        if retrieval_mode == "hybrid" and rrf_mode == "weighted":
+            suffix += "_weighted"
+        if rerank:
+            suffix += "_rerank" + (
+                f"_th{rerank_threshold}" if rerank_threshold is not None else ""
+            )
         answer_quality_json = (
-            RESULTS_DIR / f"answer_quality_{retrieval_mode}_k{top_k}.json"
+            RESULTS_DIR / f"answer_quality_{retrieval_mode}_k{top_k}{suffix}.json"
         )
         answer_quality_json.write_text(
             json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8"

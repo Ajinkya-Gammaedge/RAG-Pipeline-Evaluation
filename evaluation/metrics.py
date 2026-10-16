@@ -1,20 +1,13 @@
 """
 Retrieval Evaluation
 
-Evaluates all three retrieval modes (vector, lexical, hybrid) against SciFact
-test qrels using BEIR's EvaluateRetrieval wrapper (pytrec_eval under the hood)
+Evaluates retrieval modes (vector, lexical, hybrid, rerank) against SciFact
+test qrels using BEIR's EvaluateRetrieval wrapper (pytrec_eval under the hood).
 
-Metrics reported at k=10:
-  - nDCG@5
-  - MAP@5
-  - Recall@5
-  - Precision@5
-  - MRR@5
-  - nDCG@10
-  - MAP@10
-  - Recall@10
-  - Precision@10
-  - MRR@10
+Metrics reported dynamically up to top_k:
+  - top_k=5:   @5 (nDCG@5, MAP@5, Recall@5, P@5, MRR@5)
+  - top_k=10:  @5, @10
+  - top_k=20:  @5, @10, @20
 
 Run:
     python -m evaluation.metrics
@@ -31,7 +24,7 @@ from typing import Literal
 from beir.retrieval.evaluation import EvaluateRetrieval
 
 from app.db import session_local
-from app.embeddings.sentence_tranformer import embedder
+from app.embeddings.sentence_transformer import embedder
 from app.retrieval.retrieval import retrieve, aggregate_document_scores
 from scripts.download_scifact import load_scifact_data
 
@@ -49,13 +42,18 @@ async def run_retrieval_for_all_queries(
     top_k: int,
     rrf_k: int = 60,
     query_vectors: list[list[float]] | None = None,
+    rerank: bool = False,
+    rerank_threshold: float | None = None,
+    rrf_mode: Literal["standard", "weighted"] = "standard",
+    vector_weight: float = 0.7,
+    lexical_weight: float = 0.3,
 ) -> dict[str, dict[str, float]]:
     """
     Run retrieval for every query and return results in BEIR format:
         { query_id: { corpus_doc_id: score, ... }, ... }
 
-    Retrieves sufficient candidate chunks so that multi-chunk documents
-    deduplicate cleanly to a full top_k unique document list for BEIR.
+    Retrieves top_k chunks per query using the retrieve() pipeline,
+    then aggregates chunk scores to document level for BEIR evaluation.
     """
 
     results: dict[str, dict[str, float]] = {}
@@ -73,19 +71,23 @@ async def run_retrieval_for_all_queries(
         if mode == "lexical":
             query_vectors = [None] * len(query_texts)
 
-    # fetch candidate pool to guarantee up to top_k unique documents after deduplication
-    candidate_chunk_k = max(top_k * 3, 25)
-
-    logger.info("Running retrieval (mode=%s, top_k=%d docs) ...", mode, top_k)
+    logger.info(
+        "Running retrieval (mode=%s, top_k=%d, rrf_mode=%s) ...", mode, top_k, rrf_mode
+    )
     async with session_local() as session:
         for qid, text, qvec in zip(query_ids, query_texts, query_vectors):
             chunks = await retrieve(
                 session=session,
                 query=text,
-                top_k=candidate_chunk_k,
+                top_k=top_k,
                 mode=mode,
                 rrf_k=rrf_k,
                 query_vector=qvec,
+                rerank=rerank,
+                rerank_threshold=rerank_threshold,
+                rrf_mode=rrf_mode,
+                vector_weight=vector_weight,
+                lexical_weight=lexical_weight,
             )
             # aggregate chunk scores to document level and retain top_k unique documents
             doc_scores = aggregate_document_scores(chunks)
@@ -109,6 +111,11 @@ async def evaluate_retrieval(
     save_results: bool = True,
     label: str | None = None,
     eval_k_values: list[int] | None = None,
+    rerank: bool = False,
+    rerank_threshold: float | None = None,
+    rrf_mode: Literal["standard", "weighted"] = "standard",
+    vector_weight: float = 0.7,
+    lexical_weight: float = 0.3,
 ) -> dict[str, float]:
     """
     Dynamically evaluates cutoffs up to and including top_k:
@@ -124,6 +131,11 @@ async def evaluate_retrieval(
         top_k=top_k,
         rrf_k=rrf_k,
         query_vectors=query_vectors,
+        rerank=rerank,
+        rerank_threshold=rerank_threshold,
+        rrf_mode=rrf_mode,
+        vector_weight=vector_weight,
+        lexical_weight=lexical_weight,
     )
     elapsed = time.perf_counter() - t0
     logger.info("Retrieval done in %.1f s", elapsed)
@@ -161,22 +173,26 @@ async def evaluate_retrieval(
 
     if save_results:
         RESULTS_DIR.mkdir(parents=True, exist_ok=True)
-        timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
         iso_timestamp = datetime.now(timezone.utc).isoformat()
         payload = {
             "label": exp_label,
             "mode": mode,
             "top_k": top_k,
             "rrf_k": rrf_k,
+            "rrf_mode": rrf_mode,
+            "vector_weight": vector_weight if rrf_mode == "weighted" else 1.0,
+            "lexical_weight": lexical_weight if rrf_mode == "weighted" else 1.0,
+            "rerank": rerank,
+            "rerank_threshold": rerank_threshold,
             "num_queries": len(queries),
             "timestamp": iso_timestamp,
             "scores": scores,
         }
 
-        timestamped_file = RESULTS_DIR / f"retrieval_{exp_label}_{timestamp}.json"
-        timestamped_file.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+        labeled_file = RESULTS_DIR / f"retrieval_{exp_label}.json"
+        labeled_file.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
-        logger.info("Results saved to %s ", timestamped_file.name)
+        logger.info("Results saved to %s", labeled_file.name)
 
     return scores
 
