@@ -1,0 +1,25 @@
+{
+  "label": "hybrid_k10_rerank",
+  "mode": "hybrid",
+  "top_k": 10,
+  "rrf_k": 60,
+  "rrf_mode": "standard",
+  "vector_weight": 1.0,
+  "lexical_weight": 1.0,
+  "rerank": true,
+  "rerank_threshold": null,
+  "num_queries": 300,
+  "timestamp": "2026-10-15T08:08:29.284266+00:00",
+  "scores": {
+    "ndcg@5": 0.70665,
+    "map@5": 0.66925,
+    "recall@5": 0.80089,
+    "precision@5": 0.17533,
+    "mrr@5": 0.68422,
+    "ndcg@10": 0.72283,
+    "map@10": 0.67719,
+    "recall@10": 0.84639,
+    "precision@10": 0.094,
+    "mrr@10": 0.69031
+  }
+}
