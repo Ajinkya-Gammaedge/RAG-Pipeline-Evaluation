@@ -6,22 +6,18 @@ services:
     container_name: rag-db
     restart: unless-stopped
     env_file:
-      - .env
-    environment:
-      - POSTGRES_DB
-      - POSTGRES_USER
-      - POSTGRES_PASSWORD
+      - .env.docker
     ports:
       - "5432:5432"
     volumes:
       - rag_postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
-      interval: 5s
+      interval: 30s
       timeout: 5s
       retries: 10
       start_period: 10s
-  
+
   rag-app:
     build:
       context: .
@@ -30,14 +26,25 @@ services:
     container_name: rag-app
     restart: unless-stopped
     env_file:
-      - .env
+      - .env.docker
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       postgres:
         condition: service_healthy
     ports:
       - "8000:8000"
+    volumes:
+      - rag_hf_cache:/home/appuser/.cache/huggingface
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 100s
     command:
       ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
-      
+
 volumes:
   rag_postgres_data:
+  rag_hf_cache:
