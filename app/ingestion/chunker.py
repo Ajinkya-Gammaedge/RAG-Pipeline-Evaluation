@@ -4,6 +4,10 @@ from dataclasses import dataclass
 from typing import Any
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from app.core import settings
+
+DEFAULT_CHUNK_SIZE: int = settings.chunk_size
+DEFAULT_CHUNK_OVERLAP: int = settings.chunk_overlap
 
 
 @dataclass(frozen=True, slots=True)
@@ -18,8 +22,8 @@ class PreparedChunk:
 
 
 default_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=1000,
-    chunk_overlap=150,
+    chunk_size=DEFAULT_CHUNK_SIZE,
+    chunk_overlap=DEFAULT_CHUNK_OVERLAP,
     length_function=len,
     separators=["\n\n", "\n", ". ", " ", ""],
     keep_separator=True,
@@ -38,8 +42,8 @@ def prepare_document_chunks(
     document_id: int,
     title: str,
     text: str,
-    chunk_size: int = 1000,
-    chunk_overlap: int = 150,
+    chunk_size: int = DEFAULT_CHUNK_SIZE,
+    chunk_overlap: int = DEFAULT_CHUNK_OVERLAP,
 ) -> list[PreparedChunk]:
     combined_text = "\n\n".join(
         part.strip() for part in (title, text) if part and part.strip()
@@ -50,7 +54,7 @@ def prepare_document_chunks(
     if not normalized_text:
         return []
 
-    if chunk_size == 1000 and chunk_overlap == 150:
+    if chunk_size == DEFAULT_CHUNK_SIZE and chunk_overlap == DEFAULT_CHUNK_OVERLAP:
         splitter = default_splitter
     else:
         splitter = RecursiveCharacterTextSplitter(

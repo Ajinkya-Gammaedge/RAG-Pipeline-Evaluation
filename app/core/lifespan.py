@@ -10,8 +10,8 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     try:
-        async with engine.connect() as conncetion:
-            await conncetion.execute(text("SELECT 1"))
+        async with engine.connect() as connection:
+            await connection.execute(text("SELECT 1"))
             logger.info("Database connection successful")
 
     except Exception:

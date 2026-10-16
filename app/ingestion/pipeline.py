@@ -9,17 +9,24 @@ from app.ingestion.chunker import (
     PreparedChunk,
     prepare_document_chunks,
 )
+from app.core import settings
 
-DOCUMENT_BATCH_SIZE = 100
-EMBEDDING_BATCH_SIZE = 64
+DOCUMENT_BATCH_SIZE: int = settings.document_batch_size
+EMBEDDING_BATCH_SIZE: int = settings.embedding_batch_size
+CHUNK_SIZE: int = settings.chunk_size
+CHUNK_OVERLAP: int = settings.chunk_overlap
 
 
-async def embed_in_batches(embedder, chunks: Sequence[PreparedChunk]):
+async def embed_in_batches(
+    embedder,
+    chunks: Sequence[PreparedChunk],
+    batch_size: int = EMBEDDING_BATCH_SIZE,
+):
     """Return vectors in exactly the same order as the input chunks."""
     vectors = []
 
-    for start in range(0, len(chunks), EMBEDDING_BATCH_SIZE):
-        batch = chunks[start : start + EMBEDDING_BATCH_SIZE]
+    for start in range(0, len(chunks), batch_size):
+        batch = chunks[start : start + batch_size]
 
         batch_vectors = await embedder.embed_documents(
             [chunk.content for chunk in batch]
@@ -39,8 +46,8 @@ async def ingest_document_batch(
     session_factory: async_sessionmaker[AsyncSession],
     embedder,
     documents: Sequence[dict],
-    chunk_size: int = 1000,
-    chunk_overlap: int = 150,
+    chunk_size: int = CHUNK_SIZE,
+    chunk_overlap: int = CHUNK_OVERLAP,
 ) -> dict[str, int]:
     """
     expected document shape:

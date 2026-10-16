@@ -1,0 +1,244 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 885.1679999999997 3035.059" width="885.1679999999997" height="3035.059" style="--bg:#1F1F1F;--fg:#CCCCCC;--line:#CCCCCC;--accent:#0078D4;--muted:#CCCCCCCC;--surface:#181818;--border:#CCCCCC;background:var(--bg)">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+  text { font-family: 'Inter', system-ui, sans-serif; }
+  svg {
+    /* Derived from --bg and --fg (overridable via --line, --accent, etc.) */
+    --_text:          var(--fg);
+    --_text-sec:      var(--muted, color-mix(in srgb, var(--fg) 60%, var(--bg)));
+    --_text-muted:    var(--muted, color-mix(in srgb, var(--fg) 40%, var(--bg)));
+    --_text-faint:    color-mix(in srgb, var(--fg) 25%, var(--bg));
+    --_line:          var(--line, color-mix(in srgb, var(--fg) 50%, var(--bg)));
+    --_arrow:         var(--accent, color-mix(in srgb, var(--fg) 85%, var(--bg)));
+    --_node-fill:     var(--surface, color-mix(in srgb, var(--fg) 3%, var(--bg)));
+    --_node-stroke:   var(--border, color-mix(in srgb, var(--fg) 20%, var(--bg)));
+    --_group-fill:    var(--bg);
+    --_group-hdr:     color-mix(in srgb, var(--fg) 5%, var(--bg));
+    --_inner-stroke:  color-mix(in srgb, var(--fg) 12%, var(--bg));
+    --_key-badge:     color-mix(in srgb, var(--fg) 10%, var(--bg));
+  }
+</style>
+<defs>
+  <marker id="arrowhead" markerWidth="8" markerHeight="5" refX="7" refY="2.5" orient="auto">
+    <polygon points="0 0, 8 2.5, 0 5" fill="var(--_arrow)" stroke="var(--_arrow)" stroke-width="1" stroke-linejoin="round" />
+  </marker>
+  <marker id="arrowhead-start" markerWidth="8" markerHeight="5" refX="1" refY="2.5" orient="auto-start-reverse">
+    <polygon points="8 0, 0 2.5, 8 5" fill="var(--_arrow)" stroke="var(--_arrow)" stroke-width="1" stroke-linejoin="round" />
+  </marker>
+</defs>
+<g class="subgraph" data-id="Ingestion" data-label="1. Ingestion &amp; Storage Pipeline (app/ingestion)">
+  <rect x="190.09654166666658" y="40" width="489.5764999999999" height="692.657" rx="4" fill="var(--_group-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="190.09654166666658" y="40" width="489.5764999999999" height="28" rx="4" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="202.09654166666658" y="54" font-size="12" font-weight="600" fill="var(--_text-sec)" dy="4.199999999999999">1. Ingestion &amp; Storage Pipeline (app/ingestion)</text>
+</g>
+<g class="subgraph" data-id="RetrievalEngine" data-label="2. Multi-Stage Retrieval Engine (app/retrieval)">
+  <rect x="40" y="860.957" width="805.1679999999998" height="1621.102" rx="4" fill="var(--_group-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="40" y="860.957" width="805.1679999999998" height="28" rx="4" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="52" y="874.957" font-size="12" font-weight="600" fill="var(--_text-sec)" dy="4.199999999999999">2. Multi-Stage Retrieval Engine (app/retrieval)</text>
+</g>
+<g class="subgraph" data-id="GenerationEngine" data-label="3. Grounded Generation &amp; API (app/generation &amp; main)">
+  <rect x="188.69466666666665" y="2542.059" width="571.0864999999999" height="453.00000000000006" rx="4" fill="var(--_group-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="188.69466666666665" y="2542.059" width="571.0864999999999" height="28" rx="4" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="200.69466666666665" y="2556.059" font-size="12" font-weight="600" fill="var(--_text-sec)" dy="4.199999999999999">3. Grounded Generation &amp; API (app/generation &amp; main)</text>
+</g>
+<polyline class="edge" data-from="EmptyPool" data-to="HTTP404" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="577.7554166666665,2466.059 577.7554166666666,2524.059 604.2461666666666,2524.059 604.2461666666666,2586.059" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="FinalChunks" data-to="PromptBuilder" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="371.4614166666666,2466.059 371.46141666666654,2524.059 344.9706666666666,2524.059 344.9706666666666,2586.059" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="PG" data-to="VecSearch" data-style="dotted" data-arrow-start="false" data-arrow-end="true" data-label="Vector Search" points="467.15279166666653,716.657 467.15279166666653,774.657 270.50520833333326,774.657 270.50520833333326,842.957 96.498875,842.957 96.498875,1416.8000000000002 116.50499999999998,1416.8000000000002 116.50499999999998,1457.025" fill="none" stroke="var(--_line)" stroke-width="1" stroke-dasharray="4 4" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="PG" data-to="LexSearch" data-style="dotted" data-arrow-start="false" data-arrow-end="true" data-label="FTS Search" points="598.1662916666664,716.657 598.1662916666664,774.657 624.1667083333332,774.657 624.1667083333332,842.957 632.9658749999999,842.957 632.9658749999999,1416.8000000000002 502.53324999999984,1416.8000000000002 502.53324999999984,1457.025" fill="none" stroke="var(--_line)" stroke-width="1" stroke-dasharray="4 4" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="PG" data-to="ParallelDual" data-style="dotted" data-arrow-start="false" data-arrow-end="true" data-label="Parallel Read" points="532.6595416666665,716.657 532.6595416666665,1351" fill="none" stroke="var(--_line)" stroke-width="1" stroke-dasharray="4 4" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="Corpus" data-to="Chunker" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="421.36154166666654,120.9 421.36154166666654,168.9" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="Chunker" data-to="HashCheck" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="421.36154166666654,205.8 421.36154166666654,253.8" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="HashCheck" data-to="Skip" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-label="Match (Unchanged)" points="394.6853749999999,387.18083333333334 394.6853749999999,425.85699999999997 310.06354166666654,425.85699999999997 310.06354166666654,530.1569999999999" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="HashCheck" data-to="Embedder" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-label="New / Changed" points="448.03770833333317,387.18083333333334 448.03770833333317,425.85699999999997 532.6595416666665,425.85699999999997 532.6595416666665,530.1569999999999" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="Embedder" data-to="PG" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="532.6595416666665,583.957 532.6595416666665,631.957" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="ClientReq" data-to="ModeSwitch" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="305.20174999999995,992.557 305.20174999999995,1040.557" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="ModeSwitch" data-to="VecSearch" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-label="vector" points="256.66599999999994,1186.16425 256.66599999999994,1246.7 177.00999999999996,1246.7 177.00999999999996,1457.025" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="ModeSwitch" data-to="LexSearch" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-label="lexical" points="305.20174999999995,1234.7 305.20174999999995,1246.7 307.20287499999995,1246.7 307.20287499999995,1428.8000000000002 384.8577499999999,1428.8000000000002 384.8577499999999,1457.025" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="ModeSwitch" data-to="ParallelDual" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-label="hybrid (default)" points="353.73749999999995,1186.16425 353.73749999999995,1246.7 442.3532083333332,1246.7 442.3532083333332,1351" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="ParallelDual" data-to="VecSearch" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="487.5063749999999,1404.8 487.5063749999999,1430.9125 177.00999999999996,1430.9125 177.00999999999996,1457.025" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="ParallelDual" data-to="LexSearch" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="487.5063749999999,1404.8 487.5063749999999,1430.9125 443.69549999999987,1430.9125 443.69549999999987,1457.025" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="VecSearch" data-to="Candidates" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="177.00999999999996,1527.7250000000001 177.00999999999996,1549.6125000000002 443.69549999999987,1549.6125000000002 443.69549999999987,1571.5" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="LexSearch" data-to="Candidates" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="443.69549999999987,1527.7250000000001 443.69549999999987,1549.6125000000002 443.69549999999987,1549.6125000000002 443.69549999999987,1571.5" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="ParallelDual" data-to="RRF" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="487.5063749999999,1404.8 487.5063749999999,1430.9125 709.2694999999999,1430.9125 709.2694999999999,1457.025" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="RRF" data-to="Candidates" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="709.2694999999999,1510.825 709.2694999999999,1549.6125000000002 443.69549999999987,1549.6125000000002 443.69549999999987,1571.5" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="Candidates" data-to="RerankDecision" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="443.69549999999987,1608.4 443.6954999999999,1656.4" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="RerankDecision" data-to="FinalChunks" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-label="No" points="415.5373333333332,1797.1908333333336 415.5373333333332,1837.3490000000002 357.21141666666654,1837.3490000000002 357.21141666666654,2393.159 340.38724999999994,2393.159 340.38724999999994,2429.159" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="RerankDecision" data-to="CrossEncoder" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-label="Yes (Pool: max(3*top_k, 30))" points="471.8536666666666,1797.1908333333336 471.8536666666666,1837.3490000000002 515.1027499999999,1837.3490000000002 515.1027499999999,1941.649" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="CrossEncoder" data-to="SigmoidCalib" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="515.1027499999999,1995.449 515.1027499999999,2043.449" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="SigmoidCalib" data-to="ThresholdFilter" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="515.1027499999999,2080.349 515.1027499999999,2128.349" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="ThresholdFilter" data-to="FinalChunks" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-label="Pass" points="484.35108333333324,2282.107333333334 484.35108333333324,2324.859 427.49283333333324,2324.859 427.49283333333324,2393.159 402.53558333333325,2393.159 402.53558333333325,2429.159" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="ThresholdFilter" data-to="EmptyPool" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-label="All Fail / Empty" points="545.8544166666666,2282.107333333334 545.8544166666666,2324.859 577.7554166666666,2324.859 577.7554166666665,2429.159" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="PromptBuilder" data-to="OllamaLLM" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="344.9706666666666,2639.8590000000004 344.9706666666666,2687.8590000000004" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="OllamaLLM" data-to="CleanTags" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="344.9706666666666,2741.659 344.9706666666666,2789.659" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="CleanTags" data-to="APIResponse" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="344.9706666666666,2843.4590000000003 344.9706666666666,2891.4590000000003" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<g class="edge-label" data-from="PG" data-to="VecSearch" data-label="Vector Search">
+  <rect x="226.50520833333326" y="781.657" width="87.14800000000001" height="30.3" rx="3" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1" />
+  <text x="270.07920833333327" y="796.807" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">Vector Search</text>
+</g>
+<g class="edge-label" data-from="PG" data-to="LexSearch" data-label="FTS Search">
+  <rect x="585.6667083333332" y="781.657" width="76.45599999999999" height="30.3" rx="3" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1" />
+  <text x="623.8947083333331" y="796.807" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">FTS Search</text>
+</g>
+<g class="edge-label" data-from="PG" data-to="ParallelDual" data-label="Parallel Read">
+  <rect x="491.6595416666666" y="781.657" width="81.20800000000001" height="30.3" rx="3" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1" />
+  <text x="532.2635416666666" y="796.807" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">Parallel Read</text>
+</g>
+<g class="edge-label" data-from="HashCheck" data-to="Skip" data-label="Match (Unchanged)">
+  <rect x="255.06354166666657" y="456.85699999999997" width="109.12600000000002" height="30.3" rx="3" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1" />
+  <text x="309.6265416666666" y="472.00699999999995" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">Match (Unchanged)</text>
+</g>
+<g class="edge-label" data-from="HashCheck" data-to="Embedder" data-label="New / Changed">
+  <rect x="488.6595416666665" y="456.85699999999997" width="87.14800000000001" height="30.3" rx="3" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1" />
+  <text x="532.2335416666665" y="472.00699999999995" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">New / Changed</text>
+</g>
+<g class="edge-label" data-from="ModeSwitch" data-to="VecSearch" data-label="vector">
+  <rect x="152.50999999999996" y="1277.6999999999998" width="48.538000000000004" height="30.3" rx="3" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1" />
+  <text x="176.77899999999997" y="1292.85" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">vector</text>
+</g>
+<g class="edge-label" data-from="ModeSwitch" data-to="LexSearch" data-label="lexical">
+  <rect x="282.70287499999995" y="1277.6999999999998" width="48.538000000000004" height="30.3" rx="3" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1" />
+  <text x="306.97187499999995" y="1292.85" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">lexical</text>
+</g>
+<g class="edge-label" data-from="ModeSwitch" data-to="ParallelDual" data-label="hybrid (default)">
+  <rect x="398.3532083333332" y="1277.6999999999998" width="87.14800000000002" height="30.3" rx="3" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1" />
+  <text x="441.9272083333332" y="1292.85" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">hybrid (default)</text>
+</g>
+<g class="edge-label" data-from="RerankDecision" data-to="FinalChunks" data-label="No">
+  <rect x="341.71141666666654" y="2046.7489999999998" width="30.718000000000004" height="30.3" rx="3" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1" />
+  <text x="357.0704166666665" y="2061.899" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">No</text>
+</g>
+<g class="edge-label" data-from="RerankDecision" data-to="CrossEncoder" data-label="Yes (Pool: max(3*top_k, 30))">
+  <rect x="440.6027499999999" y="1868.349" width="148.924" height="30.3" rx="3" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1" />
+  <text x="515.0647499999999" y="1883.499" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">Yes (Pool: max(3*top_k, 30))</text>
+</g>
+<g class="edge-label" data-from="ThresholdFilter" data-to="FinalChunks" data-label="Pass">
+  <rect x="405.99283333333324" y="2355.859" width="42.598" height="30.3" rx="3" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1" />
+  <text x="427.2918333333332" y="2371.009" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">Pass</text>
+</g>
+<g class="edge-label" data-from="ThresholdFilter" data-to="EmptyPool" data-label="All Fail / Empty">
+  <rect x="535.2554166666665" y="2355.859" width="84.17800000000003" height="30.3" rx="3" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1" />
+  <text x="577.3444166666666" y="2371.009" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">All Fail / Empty</text>
+</g>
+<g class="node" data-id="Corpus" data-label="SciFact Corpus (5,183 docs)" data-shape="rectangle">
+  <rect x="319.2470416666665" y="84" width="204.229" height="36.900000000000006" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="421.36154166666654" y="102.45" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">SciFact Corpus (5,183 docs)</text>
+</g>
+<g class="node" data-id="Chunker" data-label="Chunker (1,000 chars, 150 overlap)" data-shape="rectangle">
+  <rect x="301.09254166666653" y="168.9" width="240.53799999999998" height="36.900000000000006" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="421.36154166666654" y="187.35000000000002" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Chunker (1,000 chars, 150 overlap)</text>
+</g>
+<g class="node" data-id="HashCheck" data-label="SHA-256 Hash
+in PostgreSQL?" data-shape="diamond">
+  <polygon points="421.36154166666654,253.8 501.39004166666655,333.8285 421.36154166666654,413.857 341.33304166666653,333.8285" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="421.36154166666654" y="333.8285" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="421.36154166666654" dy="-3.9000000000000012">SHA-256 Hash</tspan><tspan x="421.36154166666654" dy="16.900000000000002">in PostgreSQL?</tspan></text>
+</g>
+<g class="node" data-id="Skip" data-label="Skip Embedding (Idempotent)" data-shape="rectangle">
+  <rect x="206.09654166666658" y="530.1569999999999" width="207.93399999999997" height="36.900000000000006" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="310.06354166666654" y="548.607" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Skip Embedding (Idempotent)</text>
+</g>
+<g class="node" data-id="Embedder" data-label="SentenceTransformer
+(BAAI/bge-base-en-v1.5)" data-shape="rectangle">
+  <rect x="442.0305416666665" y="530.1569999999999" width="181.25799999999995" height="53.800000000000004" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="532.6595416666665" y="557.0569999999999" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="532.6595416666665" dy="-3.9000000000000012">SentenceTransformer</tspan><tspan x="532.6595416666665" dy="16.900000000000002">(BAAI/bge-base-en-v1.5)</tspan></text>
+</g>
+<g class="node" data-id="PG" data-label="PostgreSQL 16 + pgvector
+• HNSW Vector Index (768-d)
+• GIN TSVector Index (Cover-Density)" data-shape="cylinder">
+  <rect x="401.6460416666665" y="638.957" width="262.02699999999993" height="70.7" fill="var(--_node-fill)" stroke="none" />
+  <line x1="401.6460416666665" y1="638.957" x2="401.6460416666665" y2="709.657" stroke="var(--_node-stroke)" stroke-width="1" />
+  <line x1="663.6730416666664" y1="638.957" x2="663.6730416666664" y2="709.657" stroke="var(--_node-stroke)" stroke-width="1" />
+  <ellipse cx="532.6595416666664" cy="709.657" rx="131.01349999999996" ry="7" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <ellipse cx="532.6595416666664" cy="638.957" rx="131.01349999999996" ry="7" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="532.6595416666664" y="674.307" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="532.6595416666664" dy="-12.350000000000001">PostgreSQL 16 + pgvector</tspan><tspan x="532.6595416666664" dy="16.900000000000002">• HNSW Vector Index (768-d)</tspan><tspan x="532.6595416666664" dy="16.900000000000002">• GIN TSVector Index (Cover-Density)</tspan></text>
+</g>
+<g class="node" data-id="ClientReq" data-label="POST /query Request
+• query: string
+• retrieval_mode: vector | lexical | hybrid
+• top_k, rerank, threshold" data-shape="rectangle">
+  <rect x="167.14874999999998" y="904.957" width="276.10599999999994" height="87.60000000000001" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="305.20174999999995" y="948.757" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="305.20174999999995" dy="-20.8">POST /query Request</tspan><tspan x="305.20174999999995" dy="16.900000000000002">• query: string</tspan><tspan x="305.20174999999995" dy="16.900000000000002">• retrieval_mode: vector | lexical | hybrid</tspan><tspan x="305.20174999999995" dy="16.900000000000002">• top_k, rerank, threshold</tspan></text>
+</g>
+<g class="node" data-id="ModeSwitch" data-label="Select Retrieval Mode" data-shape="diamond">
+  <polygon points="305.20174999999995,1040.557 402.27324999999996,1137.6285 305.20174999999995,1234.7 208.13024999999993,1137.6285" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="305.20174999999995" y="1137.6285" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Select Retrieval Mode</text>
+</g>
+<g class="node" data-id="VecSearch" data-label="Dense Vector Search
+• Embed query (BGE-base-en-v1.5)
+• pgvector HNSW Cosine Search" data-shape="rectangle">
+  <rect x="56" y="1457.025" width="242.01999999999992" height="70.7" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="177.00999999999996" y="1492.375" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="177.00999999999996" dy="-12.350000000000001">Dense Vector Search</tspan><tspan x="177.00999999999996" dy="16.900000000000002">• Embed query (BGE-base-en-v1.5)</tspan><tspan x="177.00999999999996" dy="16.900000000000002">• pgvector HNSW Cosine Search</tspan></text>
+</g>
+<g class="node" data-id="LexSearch" data-label="Lexical FTS Search
+• to_tsquery OR-expansion ('|')
+• GIN index + ts_rank_cd ranking" data-shape="rectangle">
+  <rect x="326.01999999999987" y="1457.025" width="235.35099999999997" height="70.7" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="443.69549999999987" y="1492.375" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="443.69549999999987" dy="-12.350000000000001">Lexical FTS Search</tspan><tspan x="443.69549999999987" dy="16.900000000000002">• to_tsquery OR-expansion (&#39;|&#39;)</tspan><tspan x="443.69549999999987" dy="16.900000000000002">• GIN index + ts_rank_cd ranking</tspan></text>
+</g>
+<g class="node" data-id="ParallelDual" data-label="Parallel Dual Retrieval (asyncio.gather)
+Candidate Pool: max(2*top_k, 60)" data-shape="rectangle">
+  <rect x="352.0468749999999" y="1351" width="270.919" height="53.800000000000004" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="487.5063749999999" y="1377.9" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="487.5063749999999" dy="-3.9000000000000012">Parallel Dual Retrieval (asyncio.gather)</tspan><tspan x="487.5063749999999" dy="16.900000000000002">Candidate Pool: max(2*top_k, 60)</tspan></text>
+</g>
+<g class="node" data-id="Candidates" data-label="Retrieved Candidates Pool" data-shape="rectangle">
+  <rect x="344.9154999999999" y="1571.5" width="197.55999999999997" height="36.900000000000006" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="443.69549999999987" y="1589.95" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Retrieved Candidates Pool</text>
+</g>
+<g class="node" data-id="RRF" data-label="Modular RRF Fusion (k=60)
+• Standard (1:1) or Weighted (70/30)" data-shape="rectangle">
+  <rect x="589.3709999999999" y="1457.025" width="239.79699999999994" height="53.800000000000004" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="709.2694999999999" y="1483.9250000000002" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="709.2694999999999" dy="-3.9000000000000012">Modular RRF Fusion (k=60)</tspan><tspan x="709.2694999999999" dy="16.900000000000002">• Standard (1:1) or Weighted (70/30)</tspan></text>
+</g>
+<g class="node" data-id="RerankDecision" data-label="Rerank Enabled?" data-shape="diamond">
+  <polygon points="443.6954999999999,1656.4 528.17,1740.8745000000001 443.6954999999999,1825.3490000000002 359.2209999999999,1740.8745000000001" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="443.6954999999999" y="1740.8745000000001" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Rerank Enabled?</text>
+</g>
+<g class="node" data-id="FinalChunks" data-label="Top-k Grounded Chunks" data-shape="rectangle">
+  <rect x="278.23891666666657" y="2429.159" width="186.44499999999996" height="36.900000000000006" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="371.46141666666654" y="2447.609" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Top-k Grounded Chunks</text>
+</g>
+<g class="node" data-id="CrossEncoder" data-label="CrossEncoder Reranker
+(ms-marco-MiniLM-L-6-v2)" data-shape="rectangle">
+  <rect x="416.6932499999999" y="1941.649" width="196.81899999999996" height="53.800000000000004" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="515.1027499999999" y="1968.549" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="515.1027499999999" dy="-3.9000000000000012">CrossEncoder Reranker</tspan><tspan x="515.1027499999999" dy="16.900000000000002">(ms-marco-MiniLM-L-6-v2)</tspan></text>
+</g>
+<g class="node" data-id="SigmoidCalib" data-label="Sigmoid Normalization &amp; Sort" data-shape="rectangle">
+  <rect x="411.5062499999999" y="2043.449" width="207.19299999999998" height="36.900000000000006" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="515.1027499999999" y="2061.899" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Sigmoid Normalization &amp; Sort</text>
+</g>
+<g class="node" data-id="ThresholdFilter" data-label="Score &gt;= Threshold
+(τ = 0.21)" data-shape="diamond">
+  <polygon points="515.1027499999999,2128.349 607.3577499999999,2220.6040000000003 515.1027499999999,2312.8590000000004 422.8477499999999,2220.6040000000003" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="515.1027499999999" y="2220.6040000000003" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="515.1027499999999" dy="-3.9000000000000012">Score &gt;= Threshold</tspan><tspan x="515.1027499999999" dy="16.900000000000002">(τ = 0.21)</tspan></text>
+</g>
+<g class="node" data-id="EmptyPool" data-label="Empty Candidate Set []" data-shape="rectangle">
+  <rect x="487.75541666666656" y="2429.159" width="180" height="36.900000000000006" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="577.7554166666665" y="2447.609" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Empty Candidate Set []</text>
+</g>
+<g class="node" data-id="HTTP404" data-label="HTTP 404: No relevant documents found
+(Bypasses LLM, Prevents Hallucination)" data-shape="rectangle">
+  <rect x="464.7111666666666" y="2586.059" width="279.06999999999994" height="53.800000000000004" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="604.2461666666666" y="2612.9590000000003" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="604.2461666666666" dy="-3.9000000000000012">HTTP 404: No relevant documents found</tspan><tspan x="604.2461666666666" dy="16.900000000000002">(Bypasses LLM, Prevents Hallucination)</tspan></text>
+</g>
+<g class="node" data-id="PromptBuilder" data-label="Build Grounded Context
+Context: [1]... [k] + User Query" data-shape="rectangle">
+  <rect x="234.9706666666666" y="2586.059" width="220" height="53.800000000000004" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="344.9706666666666" y="2612.9590000000003" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="344.9706666666666" dy="-3.9000000000000012">Build Grounded Context</tspan><tspan x="344.9706666666666" dy="16.900000000000002">Context: [1]... [k] + User Query</tspan></text>
+</g>
+<g class="node" data-id="OllamaLLM" data-label="Local Ollama LLM
+(qwen3:1.7b / llama3.1:8b)" data-shape="rectangle">
+  <rect x="254.7121666666666" y="2687.8590000000004" width="180.517" height="53.800000000000004" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="344.9706666666666" y="2714.7590000000005" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="344.9706666666666" dy="-3.9000000000000012">Local Ollama LLM</tspan><tspan x="344.9706666666666" dy="16.900000000000002">(qwen3:1.7b / llama3.1:8b)</tspan></text>
+</g>
+<g class="node" data-id="CleanTags" data-label="Output Sanitization
+(Strip &lt;think&gt; tags)" data-shape="rectangle">
+  <rect x="269.9026666666666" y="2789.659" width="150.13600000000002" height="53.800000000000004" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="344.9706666666666" y="2816.559" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="344.9706666666666" dy="-3.9000000000000012">Output Sanitization</tspan><tspan x="344.9706666666666" dy="16.900000000000002">(Strip &lt;think&gt; tags)</tspan></text>
+</g>
+<g class="node" data-id="APIResponse" data-label="FastAPI Response (HTTP 200 OK)
+• Grounded Synthesized Answer
+• Source Chunks, Document IDs &amp; Offsets
+• Token Usage &amp; Latency Telemetry" data-shape="rectangle">
+  <rect x="204.69466666666665" y="2891.4590000000003" width="280.5519999999999" height="87.60000000000001" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="344.9706666666666" y="2935.2590000000005" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)"><tspan x="344.9706666666666" dy="-20.8">FastAPI Response (HTTP 200 OK)</tspan><tspan x="344.9706666666666" dy="16.900000000000002">• Grounded Synthesized Answer</tspan><tspan x="344.9706666666666" dy="16.900000000000002">• Source Chunks, Document IDs &amp; Offsets</tspan><tspan x="344.9706666666666" dy="16.900000000000002">• Token Usage &amp; Latency Telemetry</tspan></text>
+</g>
+</svg>
