@@ -1,0 +1,97 @@
+{
+  "retrieval_mode": "hybrid",
+  "rrf_mode": "standard",
+  "top_k": 5,
+  "rerank": false,
+  "rerank_threshold": null,
+  "sample_size": 5,
+  "avg_faithfulness": 2.6,
+  "avg_relevance": 2.6,
+  "good_examples": [
+    {
+      "query_id": "1086",
+      "query": "Sildenafil improves erectile function in men who experience sexual dysfunction as a result of the use of SSRI antidepressants.",
+      "answer": "Sildenafil improves erectile function in men with sexual dysfunction associated with the use of selective serotonin reuptake inhibitor (SSRI) antidepressants. This is supported by the findings of a randomized controlled trial where sildenafil significantly enhanced erectile function compared to placebo in this population.",
+      "faithfulness": 5,
+      "relevance": 5,
+      "reason": "The answer is fully supported by the context and directly addresses the question about sildenafil's efficacy in improving erectile function in men with sexual dysfunction due to SSRI antidepressants."
+    },
+    {
+      "query_id": "239",
+      "query": "Cellular aging closely links to an older appearance.",
+      "answer": "Yes, cellular aging links to an older appearance, as evidenced by the increased expression of p16INK4A in elderly individuals and the role of cellular senescence as a hallmark of aging. The context supports this connection through the correlation of p16INK4A levels with age and the accumulation of senescent cells, which contribute to age-related changes.",
+      "faithfulness": 5,
+      "relevance": 5,
+      "reason": "The answer is fully supported by the context, as it directly addresses the link between cellular aging and an older appearance, citing specific data about p16INK4A expression in elderly individuals and the role of cellular senescence as a hallmark of aging."
+    }
+  ],
+  "bad_examples": [
+    {
+      "query_id": "1266",
+      "query": "The risk of breast cancer among parous women increases with placental weight of pregnancies, and this association is strongest for premenopausal breast cancer.",
+      "answer": "The risk of breast cancer among",
+      "faithfulness": 1,
+      "relevance": 1,
+      "reason": "The answer is not fully supported by the context and is completely off-topic."
+    },
+    {
+      "query_id": "312",
+      "query": "De novo assembly of sequence data has more specific contigs than unassembled sequence data.",
+      "answer": "I cannot answer based on the provided context.",
+      "faithfulness": 1,
+      "relevance": 1,
+      "reason": "The answer contradicts the context, as it states 'I cannot answer based on the provided context,' which is not supported by any part of the given passages."
+    },
+    {
+      "query_id": "213",
+      "query": "CRP is not predictive of postoperative mortality following Coronary Artery Bypass Graft (CABG) surgery.",
+      "answer": "I cannot answer based on the provided context.",
+      "faithfulness": 1,
+      "relevance": 1,
+      "reason": "The answer contradicts the context, as it states 'I cannot answer based on the provided context,' which is not supported by any part of the given passages."
+    }
+  ],
+  "details": [
+    {
+      "query_id": "1266",
+      "query": "The risk of breast cancer among parous women increases with placental weight of pregnancies, and this association is strongest for premenopausal breast cancer.",
+      "answer": "The risk of breast cancer among",
+      "faithfulness": 1,
+      "relevance": 1,
+      "reason": "The answer is not fully supported by the context and is completely off-topic."
+    },
+    {
+      "query_id": "1086",
+      "query": "Sildenafil improves erectile function in men who experience sexual dysfunction as a result of the use of SSRI antidepressants.",
+      "answer": "Sildenafil improves erectile function in men with sexual dysfunction associated with the use of selective serotonin reuptake inhibitor (SSRI) antidepressants. This is supported by the findings of a randomized controlled trial where sildenafil significantly enhanced erectile function compared to placebo in this population.",
+      "faithfulness": 5,
+      "relevance": 5,
+      "reason": "The answer is fully supported by the context and directly addresses the question about sildenafil's efficacy in improving erectile function in men with sexual dysfunction due to SSRI antidepressants."
+    },
+    {
+      "query_id": "312",
+      "query": "De novo assembly of sequence data has more specific contigs than unassembled sequence data.",
+      "answer": "I cannot answer based on the provided context.",
+      "faithfulness": 1,
+      "relevance": 1,
+      "reason": "The answer contradicts the context, as it states 'I cannot answer based on the provided context,' which is not supported by any part of the given passages."
+    },
+    {
+      "query_id": "239",
+      "query": "Cellular aging closely links to an older appearance.",
+      "answer": "Yes, cellular aging links to an older appearance, as evidenced by the increased expression of p16INK4A in elderly individuals and the role of cellular senescence as a hallmark of aging. The context supports this connection through the correlation of p16INK4A levels with age and the accumulation of senescent cells, which contribute to age-related changes.",
+      "faithfulness": 5,
+      "relevance": 5,
+      "reason": "The answer is fully supported by the context, as it directly addresses the link between cellular aging and an older appearance, citing specific data about p16INK4A expression in elderly individuals and the role of cellular senescence as a hallmark of aging."
+    },
+    {
+      "query_id": "213",
+      "query": "CRP is not predictive of postoperative mortality following Coronary Artery Bypass Graft (CABG) surgery.",
+      "answer": "I cannot answer based on the provided context.",
+      "faithfulness": 1,
+      "relevance": 1,
+      "reason": "The answer contradicts the context, as it states 'I cannot answer based on the provided context,' which is not supported by any part of the given passages."
+    }
+  ],
+  "timestamp": "2026-10-16T11:43:51.730360+00:00"
+}

@@ -1,0 +1,25 @@
+{
+  "label": "lexical_k10",
+  "mode": "lexical",
+  "top_k": 10,
+  "rrf_k": 60,
+  "rrf_mode": "standard",
+  "vector_weight": 1.0,
+  "lexical_weight": 1.0,
+  "rerank": false,
+  "rerank_threshold": null,
+  "num_queries": 300,
+  "timestamp": "2026-10-15T07:47:07.284315+00:00",
+  "scores": {
+    "ndcg@5": 0.376,
+    "map@5": 0.33876,
+    "recall@5": 0.47722,
+    "precision@5": 0.10267,
+    "mrr@5": 0.36756,
+    "ndcg@10": 0.4083,
+    "map@10": 0.35245,
+    "recall@10": 0.57344,
+    "precision@10": 0.062,
+    "mrr@10": 0.38159
+  }
+}
