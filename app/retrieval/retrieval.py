@@ -1,6 +1,5 @@
 from collections import defaultdict
-from dataclasses import dataclass
-from typing import Any, Literal
+from typing import Literal
 from sqlalchemy import select, func, Text
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.document_chunk import DocumentChunk
@@ -8,6 +7,7 @@ from app.embeddings.sentence_transformer import embedder
 from app.retrieval.models import RetrievedChunk
 from app.retrieval.reranker import reranker
 import asyncio
+from app.db import session_local
 
 
 async def vector_retrieval(
@@ -170,9 +170,18 @@ async def hybrid_retrieval(
     """
     Retrieve top-k chunks using RRF of vector and lexical results
     Supports standard (1:1) and weighted RRF
+    Runs vector and lexical queries concurrently using separate database sessions
     """
 
     candidate_pool_size = max(top_k * 2, 60)
+
+    async def _fetch_lexical() -> list[RetrievedChunk]:
+        async with session_local() as lexical_session:
+            return await lexical_retrieval(
+                session=lexical_session,
+                query=query,
+                top_k=candidate_pool_size,
+            )
 
     vector_candidates, lexical_candidates = await asyncio.gather(
         vector_retrieval(
@@ -181,11 +190,7 @@ async def hybrid_retrieval(
             top_k=candidate_pool_size,
             query_vector=query_vector,
         ),
-        lexical_retrieval(
-            session=session,
-            query=query,
-            top_k=candidate_pool_size,
-        ),
+        _fetch_lexical(),
     )
 
     return reciprocal_rank_fusion(
