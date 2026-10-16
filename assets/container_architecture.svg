@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 740" width="960" height="740" style="--bg:#1F1F1F;--fg:#CCCCCC;--line:#CCCCCC;--accent:#0078D4;--muted:#CCCCCCCC;--surface:#181818;--border:#CCCCCC;background:var(--bg)">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+  text { font-family: 'Inter', system-ui, sans-serif; }
+  svg {
+    --_text:          var(--fg);
+    --_text-sec:      var(--muted, color-mix(in srgb, var(--fg) 60%, var(--bg)));
+    --_text-muted:    var(--muted, color-mix(in srgb, var(--fg) 40%, var(--bg)));
+    --_text-faint:    color-mix(in srgb, var(--fg) 25%, var(--bg));
+    --_line:          var(--line, color-mix(in srgb, var(--fg) 50%, var(--bg)));
+    --_arrow:         var(--accent, color-mix(in srgb, var(--fg) 85%, var(--bg)));
+    --_node-fill:     var(--surface, color-mix(in srgb, var(--fg) 3%, var(--bg)));
+    --_node-stroke:   var(--border, color-mix(in srgb, var(--fg) 20%, var(--bg)));
+    --_group-fill:    var(--bg);
+    --_group-hdr:     color-mix(in srgb, var(--fg) 5%, var(--bg));
+    --_inner-stroke:  color-mix(in srgb, var(--fg) 12%, var(--bg));
+    --_key-badge:     color-mix(in srgb, var(--fg) 10%, var(--bg));
+  }
+</style>
+<defs>
+  <marker id="arrowhead" markerWidth="8" markerHeight="5" refX="7" refY="2.5" orient="auto">
+    <polygon points="0 0, 8 2.5, 0 5" fill="var(--_arrow)" stroke="var(--_arrow)" stroke-width="0.75" stroke-linejoin="round" />
+  </marker>
+</defs>
+
+<!-- Group: Host Machine -->
+<g class="subgraph" data-id="Host" data-label="Host Machine">
+  <rect x="30" y="380" width="240" height="310" rx="4" fill="var(--_group-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="30" y="380" width="240" height="28" rx="4" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="42" y="394" font-size="12" font-weight="600" fill="var(--_text-sec)" dy="4.2">Host Machine</text>
+  
+  <!-- Node: Ollama -->
+  <g class="node">
+    <rect x="45" y="425" width="210" height="245" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+    <text x="150" y="455" text-anchor="middle" font-size="14" font-weight="600" fill="var(--_text)">Ollama LLM Engine</text>
+    <text x="60" y="485" font-size="12" fill="var(--_text-sec)">• Port: 11434 (Native or Docker)</text>
+    <text x="60" y="510" font-size="12" fill="var(--_text-sec)">• Active Model: qwen3:1.7b</text>
+    <text x="60" y="535" font-size="12" fill="var(--_text-sec)">• Fallback Model: llama3.1:8b</text>
+    <text x="60" y="560" font-size="12" fill="var(--_text-sec)">• Endpoint: /api/generate</text>
+    <text x="60" y="585" font-size="12" fill="var(--_text-sec)">• Options: temperature=0.1</text>
+    <text x="60" y="610" font-size="12" fill="var(--_text-sec)">• Persistent Volume: rag_ollama</text>
+    <text x="60" y="635" font-size="12" fill="var(--_text-sec)">• Stream: false (buffered)</text>
+  </g>
+</g>
+
+<!-- Node: Client / Evaluator -->
+<g class="node">
+  <rect x="30" y="100" width="240" height="120" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="150" y="130" text-anchor="middle" font-size="14" font-weight="600" fill="var(--_text)">Client / Evaluation Suite</text>
+  <text x="45" y="158" font-size="12" fill="var(--_text-sec)">• REST Clients: curl, Web Client</text>
+  <text x="45" y="180" font-size="12" fill="var(--_text-sec)">• IR Evaluator: evaluation.run_experiments</text>
+  <text x="45" y="202" font-size="12" fill="var(--_text-sec)">• Answer Quality: evaluation.answer_quality</text>
+</g>
+
+<!-- Group: Docker Bridge Network -->
+<g class="subgraph" data-id="DockerBridge" data-label="Docker Bridge Network: rag-pipeline_default">
+  <rect x="310" y="40" width="620" height="650" rx="4" fill="var(--_group-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="310" y="40" width="620" height="28" rx="4" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="322" y="54" font-size="12" font-weight="600" fill="var(--_text-sec)" dy="4.2">Docker Bridge Network: rag-pipeline_default</text>
+
+  <!-- Sub-container: rag-app -->
+  <g class="subgraph" data-id="App" data-label="rag-app Container">
+    <rect x="330" y="80" width="580" height="260" rx="4" fill="color-mix(in srgb, var(--fg) 2%, var(--bg))" stroke="var(--_inner-stroke)" stroke-width="1" />
+    <rect x="330" y="80" width="580" height="26" rx="4" fill="var(--_group-hdr)" stroke="var(--_inner-stroke)" stroke-width="1" />
+    <text x="342" y="93" font-size="11" font-weight="600" fill="var(--_text-sec)" dy="4">Container: rag-app (:8000) [Non-root: appuser 1000]</text>
+
+    <!-- Node: FastAPI -->
+    <g class="node">
+      <rect x="345" y="118" width="255" height="95" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+      <text x="472" y="142" text-anchor="middle" font-size="13" font-weight="600" fill="var(--_text)">FastAPI / Uvicorn Server</text>
+      <text x="358" y="166" font-size="11.5" fill="var(--_text-sec)">• GET /health (Postgres ping)</text>
+      <text x="358" y="186" font-size="11.5" fill="var(--_text-sec)">• POST /query (Vector / Lexical / Hybrid)</text>
+      <text x="358" y="204" font-size="11.5" fill="var(--_text-sec)">• X-Process-Time Telemetry Middleware</text>
+    </g>
+
+    <!-- Node: Inference Models -->
+    <g class="node">
+      <rect x="620" y="118" width="270" height="95" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+      <text x="755" y="142" text-anchor="middle" font-size="13" font-weight="600" fill="var(--_text)">Lazy Inference Engines</text>
+      <text x="632" y="166" font-size="11.5" fill="var(--_text-sec)">• Embedder: BAAI/bge-base-en-v1.5</text>
+      <text x="632" y="186" font-size="11.5" fill="var(--_text-sec)">• Reranker: ms-marco-MiniLM-L-6-v2</text>
+      <text x="632" y="204" font-size="11.5" fill="var(--_text-sec)">• On-demand instantiation (@property)</text>
+    </g>
+
+    <!-- Node: Entrypoint -->
+    <g class="node">
+      <rect x="345" y="225" width="255" height="100" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+      <text x="472" y="247" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--_text)">docker-entrypoint.sh</text>
+      <text x="358" y="270" font-size="11" fill="var(--_text-sec)">1. alembic upgrade head (DDL migrations)</text>
+      <text x="358" y="289" font-size="11" fill="var(--_text-sec)">2. python -m app.ingestion.run_scifact</text>
+      <text x="358" y="308" font-size="11" fill="var(--_text-sec)">3. exec uvicorn app.main:app</text>
+    </g>
+
+    <!-- Node: Cache Volume -->
+    <g class="node">
+      <rect x="620" y="225" width="270" height="100" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+      <text x="755" y="247" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--_text)">Named Volume: rag_hf_cache</text>
+      <text x="632" y="270" font-size="11" fill="var(--_text-sec)">• Mount: /home/appuser/.cache/huggingface</text>
+      <text x="632" y="289" font-size="11" fill="var(--_text-sec)">• Persists downloaded transformer weights</text>
+      <text x="632" y="308" font-size="11" fill="var(--_text-sec)">• Zero re-download on container restarts</text>
+    </g>
+  </g>
+
+  <!-- Sub-container: rag-db -->
+  <g class="subgraph" data-id="DB" data-label="rag-db Container">
+    <rect x="330" y="360" width="580" height="310" rx="4" fill="color-mix(in srgb, var(--fg) 2%, var(--bg))" stroke="var(--_inner-stroke)" stroke-width="1" />
+    <rect x="330" y="360" width="580" height="26" rx="4" fill="var(--_group-hdr)" stroke="var(--_inner-stroke)" stroke-width="1" />
+    <text x="342" y="373" font-size="11" font-weight="600" fill="var(--_text-sec)" dy="4">Container: rag-db (PostgreSQL 16 + pgvector :5432)</text>
+
+    <!-- Node: PostgreSQL -->
+    <g class="node">
+      <rect x="345" y="400" width="255" height="120" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+      <text x="472" y="425" text-anchor="middle" font-size="13" font-weight="600" fill="var(--_text)">PostgreSQL 16 Instance</text>
+      <text x="358" y="450" font-size="11.5" fill="var(--_text-sec)">• Image: pgvector/pgvector:pg16</text>
+      <text x="358" y="470" font-size="11.5" fill="var(--_text-sec)">• DB: ragdb | User: raguser</text>
+      <text x="358" y="490" font-size="11.5" fill="var(--_text-sec)">• Healthcheck: pg_isready -U raguser</text>
+      <text x="358" y="510" font-size="11.5" fill="var(--_text-sec)">• Extensions: vector (pgvector 0.7+)</text>
+    </g>
+
+    <!-- Node: Relational & Vector Indices -->
+    <g class="node">
+      <rect x="620" y="400" width="270" height="120" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+      <text x="755" y="425" text-anchor="middle" font-size="13" font-weight="600" fill="var(--_text)">Dual Indexed Table: document_chunks</text>
+      <text x="632" y="450" font-size="11.5" fill="var(--_text-sec)">• HNSW Index: vector_cosine_ops (768-d)</text>
+      <text x="632" y="470" font-size="11.5" fill="var(--_text-sec)">• GIN Index: to_tsvector('english', content)</text>
+      <text x="632" y="490" font-size="11.5" fill="var(--_text-sec)">• Unique Constraint: (doc_id, chunk_id)</text>
+      <text x="632" y="510" font-size="11.5" fill="var(--_text-sec)">• Content Hash: SHA-256 idempotency</text>
+    </g>
+
+    <!-- Node: Postgres Volume -->
+    <g class="node">
+      <rect x="345" y="540" width="545" height="110" rx="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+      <text x="617" y="565" text-anchor="middle" font-size="13" font-weight="600" fill="var(--_text)">Named Volume: rag_postgres_data</text>
+      <text x="360" y="590" font-size="11.5" fill="var(--_text-sec)">• Mount Path: /var/lib/postgresql/data</text>
+      <text x="360" y="612" font-size="11.5" fill="var(--_text-sec)">• Complete transactional persistence for relations, vector embeddings, and search catalogs</text>
+      <text x="360" y="634" font-size="11.5" fill="var(--_text-sec)">• State management: `docker compose down -v` to reset state for fresh benchmark seeding</text>
+    </g>
+  </g>
+</g>
+
+<!-- Connectors and Labels -->
+
+<!-- Edge 1: Client -> FastAPI -->
+<polyline class="edge" points="270,160 307,160 307,160 345,160" fill="none" stroke="var(--_line)" stroke-width="1.25" marker-end="url(#arrowhead)" />
+<g class="edge-label">
+  <rect x="250" y="130" width="105" height="24" rx="3" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1" />
+  <text x="302" y="146" text-anchor="middle" font-size="11" font-weight="500" fill="var(--_text-sec)">localhost:8000</text>
+</g>
+
+<!-- Edge 2: FastAPI -> Postgres -->
+<polyline class="edge" points="472,213 472,400" fill="none" stroke="var(--_line)" stroke-width="1.25" marker-end="url(#arrowhead)" />
+<g class="edge-label">
+  <rect x="382" y="340" width="180" height="24" rx="3" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1" />
+  <text x="472" y="356" text-anchor="middle" font-size="11" font-weight="500" fill="var(--_text-sec)">postgres:5432 (Internal DNS)</text>
+</g>
+
+<!-- Edge 3: FastAPI -> Ollama -->
+<polyline class="edge" points="345,180 290,180 290,480 255,480" fill="none" stroke="var(--_line)" stroke-width="1.25" stroke-dasharray="4 4" marker-end="url(#arrowhead)" />
+<g class="edge-label">
+  <rect x="180" y="325" width="220" height="24" rx="3" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1" />
+  <text x="290" y="341" text-anchor="middle" font-size="11" font-weight="500" fill="var(--_text-sec)">host.docker.internal:11434 (Host Gateway)</text>
+</g>
+
+</svg>
